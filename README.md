@@ -12,5 +12,5 @@ Small CLI rust program implementing AES-256-CBC w/ PBKDF2 for Key Derivation. I 
 
 **Notes** 
 
-- The Salt and IV are prepended to the cipertext when saved, separated by a "===". 
+- The Salt and IV are prepended to the cipertext when saved, separated by three equals signs: '==='. 
 - This program is in it's early stages of development, you may encounter bugs, if you are using this program on anything of importance consider other, well tested, encryption tools. If you do use this program please make temp files before encryption and decryption in-case of a fatal crash.
