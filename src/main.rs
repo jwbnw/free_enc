@@ -67,9 +67,7 @@ fn begin_encrypt_or_decrypt(){
         println!("\nPlease enter your password one more time to confirm: ");
         let mut password_conformation =  get_user_input();
 
-        let true_or_false = verfiy_passwords_match(&mut password, &mut password_conformation);
-
-        if !true_or_false
+        if !verfiy_passwords_match(&mut password, &mut password_conformation)
         {
             panic!("Passwords for decryption do not match! Exiting program");
         }
@@ -91,9 +89,7 @@ fn begin_encrypt_or_decrypt(){
         println!("\nPlease enter your password one more time to confirm: ");
         let mut password_conformation =  get_user_input();
 
-        let true_or_false = verfiy_passwords_match(&mut password, &mut password_conformation);
-
-        if true_or_false == false
+        if !verfiy_passwords_match(&mut password, &mut password_conformation)
         {
             panic!("Passwords for encrpytion do not match! Exiting program");
         }
@@ -181,7 +177,7 @@ fn decrypt_document(pwd: &mut String, location_of_file: &mut String){
     let mut pbkdf2_hash = [0u8; SALT_LEN];
 
 
-    let mut data = fs::read(&location_of_file).expect("Error Reading in File to Decrypt"); //note test file path is hardcoded here b/c Im too lazt to figure out getting the relative path right and pass it to the program every time
+    let mut data = fs::read(&location_of_file).expect("Error Reading in File to Decrypt");
 
     //this can probably be initialized better..
     let mut space = [0u8; 3];
