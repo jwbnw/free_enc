@@ -67,13 +67,19 @@ fn begin_encrypt_or_decrypt(){
         println!("\nPlease enter your password one more time to confirm: ");
         let mut password_conformation =  get_user_input();
 
-        if !verfiy_passwords_match(&mut password, &mut password_conformation)
-        {
-            panic!("Passwords for decryption do not match! Exiting program");
+        let passwords_match = verfiy_passwords_match(&mut password, &mut password_conformation);
+        
+        let mut should_continue = false;
+        
+        match passwords_match {
+            Ok(_) => should_continue = true,
+            Err(_) => println!("Error passwords do not match, please start again")
         }
 
+        if should_continue{
         decrypt_document(&mut password, &mut location_of_file);
         println!("\nDecryption Successful!");
+        }
     }
 
     else if encrypt_or_decrypt == "encrypt" {
@@ -89,13 +95,19 @@ fn begin_encrypt_or_decrypt(){
         println!("\nPlease enter your password one more time to confirm: ");
         let mut password_conformation =  get_user_input();
 
-        if !verfiy_passwords_match(&mut password, &mut password_conformation)
-        {
-            panic!("Passwords for encrpytion do not match! Exiting program");
+        let mut should_continue = false;
+        
+        let passwords_match = verfiy_passwords_match(&mut password, &mut password_conformation);
+
+        match passwords_match {
+            Ok(_) => should_continue = true,
+            Err(_) => println!("Error passwords do not match, please start again")
         }
 
+        if should_continue{
         encrypt_document(&mut password, &mut location_of_file);
         println!("\nEncryption Successful!");
+        }
     }
 
     else {
@@ -159,7 +171,7 @@ fn encrypt_document(pwd: &mut String, location_of_file: &mut String){
     // append cipher 
     data_to_write.append(&mut cipertext);
     
-    let mut buffer_to_write = File::create(location_of_file).expect("Error Creating New File");// create file at location of file to be encrypted.
+    let mut buffer_to_write = File::create(location_of_file).expect("Error Creating New File");
 
     buffer_to_write.write_all(&data_to_write).expect("Error Writing Ciper Text"); 
 }
@@ -250,13 +262,13 @@ fn get_user_input() -> String {
     new_string.to_string()
 }
 
-fn verfiy_passwords_match(pwd_one: &mut String, pwd_two: &mut String) -> bool {
+fn verfiy_passwords_match(pwd_one: &mut String, pwd_two: &mut String) -> Result<bool, &'static str> {
 
     if pwd_one == pwd_two
     {
-        return true;
+        return Ok(true);
     }
-    false
+    Err("Passwords do not match")
 }
 
 // For debugging
